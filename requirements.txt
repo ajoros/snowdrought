@@ -1,0 +1,16 @@
+# Python Dependencies for Snow Drought Dashboard
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Plotting
+matplotlib>=3.7.0
+scipy>=1.10.0
+
+# Web scraping and downloads
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Logging (built-in, but good to note version requirements)
+# Python 3.9+ recommended

@@ -1,0 +1,86 @@
+name: Update Snow Drought Dashboard
+
+on:
+  # Run twice daily at midnight and noon UTC (4pm and 4am PST)
+  schedule:
+    - cron: '0 0,12 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Download HUC6 data (PREC and WTEQ)
+        run: |
+          echo "Downloading HUC6 precipitation and SWE data..."
+          python scripts/download_data.py
+      
+      - name: Download SNOTEL station data
+        run: |
+          echo "Downloading SNOTEL station data..."
+          python scripts/download_snotel_data.py
+      
+      - name: Process SNOTEL data
+        run: |
+          echo "Processing SNOTEL data..."
+          python scripts/process_snotel_data.py
+      
+      - name: Generate phase diagrams
+        run: |
+          echo "Generating phase diagrams..."
+          python scripts/generate_plots.py
+      
+      - name: Generate snow drought condition plots
+        run: |
+          echo "Generating snow drought plots..."
+          python scripts/generate_snow_drought_plots_new.py
+      
+      - name: Update web dashboard
+        run: |
+          echo "Plots already in place, ready for GitHub Pages..."
+          
+          # Update last modified timestamp
+          date > last_updated.txt
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          git add plots/ data/*.csv last_updated.txt
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update dashboard data and plots - $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+      
+      - name: Summary
+        run: |
+          echo "✅ Dashboard update complete!"
+          echo "📊 Phase diagrams: $(ls -1 plots/phase_diagrams/*.png 2>/dev/null | wc -l) files"
+          echo "🗺️ Snow drought plots: $(ls -1 plots/snow_drought_conditions/*.png 2>/dev/null | wc -l) files"

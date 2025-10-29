@@ -1,0 +1,13 @@
+
+# ============================================================================
+# DAN'S DATA PROCESSING
+# ============================================================================
+
+# Snow Drought Data Pipeline (runs at midnight and noon)
+1 0,12 * * * ~/miniconda3/envs/py3dan/bin/python3 /home/ec2-user/dans/download_snotel_data.py > /home/ec2-user/dans/logs/cronlog_SnowDrought_SNOTELDownloadData.log 2>&1
+11 0,12 * * * ~/miniconda3/envs/py3dan/bin/python3 /home/ec2-user/dans/process_snotel_data.py > /home/ec2-user/dans/logs/cronlog_SnowDrought_SNOTELProcessData.log 2>&1
+15 0,12 * * * ~/miniconda3/envs/py3dan/bin/python3 /home/ec2-user/dans/generate_snow_drought_plots_new.py > /home/ec2-user/dans/logs/cronlog_SnowDrought_SNOTELGeneratePlots.log 2>&1
+
+# Phase Diagram Data Pipeline (runs at midnight and noon)
+20 0,12 * * * ~/miniconda3/envs/py3dan/bin/python3 /home/ec2-user/dans/download_data.py > /home/ec2-user/dans/logs/cronlogDATADOWNLOAD.log 2>&1
+40 0,12 * * * ~/miniconda3/envs/py3dan/bin/python3 /home/ec2-user/dans/generate_plots.py > /home/ec2-user/dans/logs/cronlogPHASEDIAG.log 2>&1

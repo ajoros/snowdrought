@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data files (large CSVs and JSONs - except station list)
+data/HUC6PREC/*.csv
+data/HUC6WTEQ/*.csv
+data/snotel/prec/*.json
+data/snotel/swe/*.json
+data/snotel_100day_nov1_precipitation_percentiles.csv
+data/snotel_current_swe_percentiles.csv
+data/snotel_nov1_may_precipitation_percentiles.csv
+
+# Keep the station list
+!data/snotel_station_list.csv
+
+# Temporary files
+*.tmp
+temp/
+tmp/
