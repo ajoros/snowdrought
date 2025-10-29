@@ -99,8 +99,9 @@ def main():
     logging.info("Starting SNOTEL data verification")
 
     # Read station list for all states
-    # Get the directory where this script is located
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # Get the project root directory (parent of scripts/)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = os.path.dirname(script_dir)
     stations_df = pd.read_csv(os.path.join(base_dir, 'data', 'snotel_station_list.csv'))
     # Filter for states we're interested in
     stations_df = stations_df[stations_df['State'].isin(STATE_ABBREV.keys())]

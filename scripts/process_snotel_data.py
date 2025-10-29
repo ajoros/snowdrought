@@ -181,7 +181,8 @@ def process_swe_data(swe_dir):
 
 def main():
     # Define paths
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = os.path.dirname(script_dir)
     prec_dir = os.path.join(base_dir, 'data', 'snotel', 'prec')
     swe_dir = os.path.join(base_dir, 'data', 'snotel', 'swe')
 

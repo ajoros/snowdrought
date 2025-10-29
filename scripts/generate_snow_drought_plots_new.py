@@ -63,8 +63,9 @@ def plot_state_conditions(df, state_name, output_dir):  # ← Added parameter
     plt.close()
 
 def main():
-    # Get the directory where this script is located
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # Get the project root directory (parent of scripts/)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = os.path.dirname(script_dir)
     
     # Create output directory
     output_dir = os.path.join(base_dir, 'plots/snow_drought_conditions')
