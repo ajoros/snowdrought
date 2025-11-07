@@ -44,7 +44,7 @@ Hatchett, B. J., Rhoades, A. M., & McEvoy, D. J. (2022). Monitoring the daily ev
 For questions or comments, please contact:
 
 **Andrew Joros**  
-Research Scientist  
+Assistant Research Scientist  
 Desert Research Institute  
 Email: [andrew.joros@dri.edu](mailto:andrew.joros@dri.edu)
 
