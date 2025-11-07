@@ -1,9 +1,9 @@
 name: Update Snow Drought Dashboard
 
 on:
-  # Run twice daily at midnight and noon UTC (4pm and 4am PST)
+  # Run once daily at 6am PST / 7am PDT (2pm UTC)
   schedule:
-    - cron: '0 0,12 * * *'
+    - cron: '0 14 * * *'
   
   # Allow manual trigger
   workflow_dispatch:
