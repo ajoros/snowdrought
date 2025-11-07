@@ -6,166 +6,58 @@ Real-time tracking and visualization of snow drought conditions across the weste
 
 ## Overview
 
-This automated dashboard provides:
-- **Phase Diagrams**: Daily progression (November-May) of accumulated precipitation and SWE percentiles for HUC6 river basins
-- **State-wide Snow Drought Plots**: Real-time snow drought classifications for individual SNOTEL stations
-- **Automatic Updates**: Data refreshed twice daily via GitHub Actions (midnight and noon UTC)
+This website provides real-time tracking and summaries of snow drought conditions across the western United States and Alaska using data from the Natural Resources Conservation Service SNOw TELemetry network (NRCS SNOTEL). The dashboard automatically updates daily at 6:00 AM PST / 7:00 AM PDT with the latest snow water equivalent (SWE) and precipitation data.
 
-## Snow Drought Classifications
+The dashboard provides two types of visualizations:
 
-- **Dry Snow Drought**: Both SWE and precipitation below 30th percentile
-- **Warm Snow Drought**: SWE below 30th percentile, precipitation above 50th percentile
-- **Warm and Dry Snow Drought**: SWE below 30th percentile, precipitation between 30th-50th percentile
+### Phase Diagrams
+Phase diagrams show the daily progression (November-May) of accumulated precipitation and SWE percentiles for Hydrologic Unit Code 6 (HUC 6) river basins. These diagrams are described in detail in Hatchett et al. (2022) and use basin-mean precipitation and SWE obtained from NRCS SNOTEL stations. The trajectory through the season helps identify the type and severity of snow drought conditions.
 
-## Project Structure
+### State-wide Scatter Plots
+Scatter plots show snow drought classifications for individual SNOTEL stations within each state at a single point in time (the most recent day). For both visualization types, the SWE value represents the most recent day, while the precipitation value is the accumulation from November 1 through the current day.
 
-```
-snowdrought/
-├── .github/
-│   └── workflows/
-│       └── update-dashboard.yml    # GitHub Actions automation
-├── scripts/
-│   ├── download_data.py            # Download HUC6 PREC/WTEQ data
-│   ├── download_snotel_data.py     # Download SNOTEL station data
-│   ├── process_snotel_data.py      # Process and calculate percentiles
-│   ├── generate_plots.py           # Generate phase diagrams
-│   └── generate_snow_drought_plots_new.py  # Generate state plots
-├── data/
-│   ├── HUC6PREC/                   # HUC6 precipitation data
-│   ├── HUC6WTEQ/                   # HUC6 SWE data
-│   ├── snotel/                     # SNOTEL station data
-│   └── snotel_station_list.csv     # List of SNOTEL stations
-├── plots/
-│   ├── phase_diagrams/             # Generated phase diagrams
-│   └── snow_drought_conditions/    # Generated state plots
-├── logo/                           # DRI logo
-├── index.html                      # Dashboard web interface
-├── requirements.txt                # Python dependencies
-└── README.md                       # This file
-```
+## Snow Drought Science
+
+Snow drought occurs when snow water equivalent falls below expected levels, which can happen through different mechanisms:
+
+- **Dry Snow Drought**: Both SWE and precipitation are below the 30th percentile. This occurs when there is insufficient precipitation falling as snow.
+
+- **Warm Snow Drought**: SWE is below the 30th percentile while precipitation is above the 50th percentile. This occurs when temperatures are warm enough that precipitation falls as rain instead of snow, or existing snowpack melts prematurely.
+
+- **Warm and Dry Snow Drought**: SWE is below the 30th percentile while precipitation is between the 30th and 50th percentile. This represents a combination of reduced precipitation and warmer temperatures.
+
+These classifications help water resource managers, researchers, and the public understand both the severity and the physical mechanisms driving snow drought conditions.
 
 ## Data Sources
 
 - **NRCS SNOTEL Network**: Snow water equivalent and precipitation data
-  - HUC6 Basin Data: https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/
-  - Station Data: https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/
-
-## Automation
-
-The dashboard updates automatically via GitHub Actions:
-- **Schedule**: Every 12 hours (0:00 and 12:00 UTC)
-- **Process**:
-  1. Download latest NRCS data
-  2. Process and calculate percentiles
-  3. Generate phase diagrams and state plots
-  4. Commit changes to repository
-  5. GitHub Pages automatically serves the updated site
-
-## Local Development
-
-### Prerequisites
-
-- Python 3.9 or higher
-- pip
-
-### Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ajoros/snowdrought.git
-   cd snowdrought
-   ```
-
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Run individual scripts:
-   ```bash
-   # Download data
-   python scripts/download_data.py
-   python scripts/download_snotel_data.py
-   
-   # Process data
-   python scripts/process_snotel_data.py
-   
-   # Generate plots
-   python scripts/generate_plots.py
-   python scripts/generate_snow_drought_plots_new.py
-   ```
-
-4. View the dashboard:
-   - Open `index.html` in a web browser
-
-## GitHub Pages Deployment
-
-### Initial Setup
-
-1. Create a new GitHub repository named `snowdrought`
-
-2. Push your local repository:
-   ```bash
-   cd ~/Dropbox/Snowdrought
-   git remote add origin https://github.com/ajoros/snowdrought.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-3. Configure GitHub Pages:
-   - Go to repository Settings → Pages
-   - Source: Deploy from a branch
-   - Branch: `main`
-   - Folder: `/ (root)`
-   - Save
-
-4. Enable GitHub Actions:
-   - The workflow will run automatically on schedule
-   - Manual runs: Go to Actions → Update Snow Drought Dashboard → Run workflow
-
-### First Run
-
-After pushing to GitHub, manually trigger the first workflow run to populate initial data:
-1. Go to Actions tab
-2. Select "Update Snow Drought Dashboard"
-3. Click "Run workflow"
-
-The dashboard will be live at: **https://ajoros.github.io/snowdrought**
-
-## Cron Schedule (Original EC2 Setup)
-
-For reference, the original cron schedule was:
-```cron
-# Run every 12 hours at midnight and noon
-1 0,12 * * * python3 download_snotel_data.py
-11 0,12 * * * python3 process_snotel_data.py
-15 0,12 * * * python3 generate_snow_drought_plots_new.py
-20 0,12 * * * python3 download_data.py
-40 0,12 * * * python3 generate_plots.py
-```
-
-This has been replaced by the GitHub Actions workflow.
+  - HUC6 Basin Data: [https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/](https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/)
+  - Station Data: [https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/](https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/)
+  - Interactive Map: [https://nwcc-apps.sc.egov.usda.gov/imap](https://nwcc-apps.sc.egov.usda.gov/imap)
 
 ## References
 
-- **Hatchett, B. J., Rhoades, A. M., & McEvoy, D. J. (2022)**. Monitoring the daily evolution and extent of snow drought. *Natural Hazards and Earth System Sciences*, 22(3), 869-890.
-  - [https://nhess.copernicus.org/articles/22/869/2022/](https://nhess.copernicus.org/articles/22/869/2022/nhess-22-869-2022.html)
-
-- **NRCS SNOTEL Network**
-  - [https://nwcc-apps.sc.egov.usda.gov/imap](https://nwcc-apps.sc.egov.usda.gov/imap)
+Hatchett, B. J., Rhoades, A. M., & McEvoy, D. J. (2022). Monitoring the daily evolution and extent of snow drought. *Natural Hazards and Earth System Sciences*, 22(3), 869-890. [https://nhess.copernicus.org/articles/22/869/2022/nhess-22-869-2022.html](https://nhess.copernicus.org/articles/22/869/2022/nhess-22-869-2022.html)
 
 ## Contact
 
-For questions or comments, please contact Dan McEvoy at the Desert Research Institute:
-- Email: mcevoyd@dri.edu
-- Website: [https://www.dri.edu](https://www.dri.edu)
+For questions or comments, please contact:
 
-## License
+**Andrew Joros**  
+Research Scientist  
+Desert Research Institute  
+Email: [andrew.joros@dri.edu](mailto:andrew.joros@dri.edu)
 
-This project is developed at the Desert Research Institute (DRI).
+**Dan McEvoy, Ph.D.**  
+Research Professor  
+Desert Research Institute  
+Email: [mcevoyd@dri.edu](mailto:mcevoyd@dri.edu)
+
+**Desert Research Institute**  
+Website: [https://www.dri.edu](https://www.dri.edu)
 
 ---
 
 **Maintained by**: Desert Research Institute  
-**GitHub**: [https://github.com/ajoros/snowdrought](https://github.com/ajoros/snowdrought)  
-**Last Updated**: 2025
+**Dashboard**: [https://ajoros.github.io/snowdrought](https://ajoros.github.io/snowdrought)  
+**Repository**: [https://github.com/ajoros/snowdrought](https://github.com/ajoros/snowdrought)
