@@ -46,3 +46,4 @@ data/snotel/swe/*.json
 *.tmp
 temp/
 tmp/
+PROJECT_MIGRATION_SUMMARY.md
