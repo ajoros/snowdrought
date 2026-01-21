@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNOTEL Snow Drought Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Dynamic Grid with adjustable plot size */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* Min size of 300px */
+            gap: 20px;
+            padding: 20px;
+            max-width: 100%;
+            /* Full width to utilize all space */
+            margin: 0 auto;
+        }
+
+        /* Cap max plots per row to 5 */
+        @media screen and (min-width: 1500px) {
+            .container {
+                grid-template-columns: repeat(5, 1fr);
+                /* 5 plots per row on large screens */
+            }
+        }
+
+        /* 4 plots per row on medium screens */
+        @media screen and (max-width: 1499px) {
+            .container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* 3 plots per row on smaller screens */
+        @media screen and (max-width: 1200px) {
+            .container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* 2 plots per row on very small screens */
+        @media screen and (max-width: 900px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 1 plot per row for very small mobile screens */
+        @media screen and (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .plot-container {
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        .plot-container img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .plot-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .plot-container .plot-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .plot-actions {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .plot-container:hover .plot-actions {
+            display: flex;
+            opacity: 1;
+        }
+
+        .plot-actions button {
+            background-color: rgba(128, 128, 128, 0.7);
+            /* Greyed out look */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+
+        .plot-actions button:hover {
+            background-color: rgba(64, 64, 64, 0.7);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+
+        /* Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #333;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with About button -->
+    <header style="background-color: #333; padding: 15px 25px; margin-bottom: 20px; display: flex; align-items: center;">
+        <img src="logo/official-dri-logo-trans-bkgd.png" alt="DRI Logo" style="height: 60px; width: auto; margin-right: 45px;">
+        <h1 style="color: white; margin: 0; flex-grow: 1; text-align: center;">SNOTEL Snow Drought Dashboard</h1>
+        <button onclick="openAboutModal()" style="padding: 12px 24px; background-color: #555; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 16px;">About</button>
+    </header>
+
+    <!-- Modal -->
+    <div id="aboutModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+        <div style="background-color: white; margin: 10% auto; padding: 20px; width: 80%; max-width: 800px; border-radius: 8px; position: relative; max-height: 80vh; overflow-y: auto;">
+            <span onclick="closeAboutModal()" style="position: absolute; right: 20px; top: 10px; font-size: 24px; cursor: pointer; color: #555;">&times;</span>
+            <h2>About</h2>
+            <div style="line-height: 1.6;">
+                <p>
+                    This website provides real-time tracking and summaries of snow drought conditions across the western United States and Alaska using data from the Natural Resources Conservation Service SNOw TELemetry network (NRCS SNOTEL). The Phase Diagrams are described in detail in Hatchett et al. (2022) and show the daily progression (November-May) of accumulated precipitation and daily snow water equivalent (SWE) percentiles. Phase diagrams use hydrologic unit code 6 (HUC 6) river basin mean precipitation and SWE obtained from NRCS SNOTEL.
+                </p>
+                <p>
+                    The statewide snow drought scatter plots show the snow drought classifications for a single point in time (most recent day) and for all individual SNOTEL stations within a given state. Dry snow drought is when both SWE and precipitation are below the 30th percentile, warm snow drought is when SWE is below the 30th percentile and precipitation is above the 50th percentile, and warm and dry snow drought is when SWE is below the 30th percentile and precipitation is between the 30th and 50th percentile. For both phase diagrams and state-wide scatter plots the SWE value is for the most recent day and precipitation value is the accumulation from November 1 through the current day.
+                </p>
+                <h3>Contact</h3>
+                <p>For questions or comments please contact Dan McEvoy at the Desert Research Institute: mcevoyd@dri.edu</p>
+                
+                <h3>References</h3>
+                <p>
+                    Hatchett, B. J., Rhoades, A. M., & McEvoy, D. J. (2022). Monitoring the daily evolution and extent of snow drought. Natural Hazards and Earth System Sciences, 22(3), 869-890. 
+                    <a href="https://nhess.copernicus.org/articles/22/869/2022/nhess-22-869-2022.html" target="_blank">https://nhess.copernicus.org/articles/22/869/2022/nhess-22-869-2022.html</a>
+                </p>
+                <p>
+                    NRCS SNOTEL. <a href="https://nwcc-apps.sc.egov.usda.gov/imap" target="_blank">https://nwcc-apps.sc.egov.usda.gov/imap</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs and controls
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-controls').forEach(control => {
+                control.style.display = 'none';
+            });
+            
+            // Show selected tab and its controls
+            document.getElementById(tabName + '-tab').classList.add('active');
+            document.querySelector(`button[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName + '-controls').style.display = 'block';
+        }
+
+        // Populate state dropdown for scatter plots
+        function populateStateDropdown() {
+            const select = document.getElementById('state-select');
+            const states = snowDroughtPlots.map(plot => plot.split('_')[0]);
+            const uniqueStates = [...new Set(states)].sort();
+            
+            uniqueStates.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                select.appendChild(option);
+            });
+        }
+
+        function openAboutModal() {
+            document.getElementById('aboutModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+        }
+
+        function closeAboutModal() {
+            document.getElementById('aboutModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('aboutModal');
+            if (event.target === modal) {
+                closeAboutModal();
+            }
+        }
+    </script>
+
+    <style>
+        /* Tab styles */
+        .tab-container {
+            text-align: center;
+            margin: 20px;
+        }
+        .tab-buttons {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .tab-button.active {
+            background-color: #333;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+
+    <!-- Controls Section -->
+    <div class="tab-container">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="showTab('phase')">Phase Diagrams</button>
+            <button class="tab-button" onclick="showTab('scatter')">Scatter Plots</button>
+        </div>
+        
+        <!-- Phase Diagrams Controls -->
+        <div id="phase-controls" class="tab-controls">
+            <select id="station-select" style="padding: 8px; margin-right: 10px; min-width: 200px;">
+                <option value="">All Stations</option>
+            </select>
+            <button onclick="downloadAllPhase()" style="padding: 8px;">Download All Plots</button>
+            <button onclick="showAllPlots()" id="back-button" style="padding: 8px; display: none;">Back to All Plots</button>
+        </div>
+
+        <!-- Scatter Plots Controls -->
+        <div id="scatter-controls" class="tab-controls" style="display: none;">
+            <select id="state-select" style="padding: 8px; margin-right: 10px; min-width: 200px;">
+                <option value="">All States</option>
+            </select>
+            <button onclick="downloadAllScatter()" style="padding: 8px;">Download All Plots</button>
+        </div>
+    </div>
+
+    <!-- Spinner -->
+    <div class="spinner" id="spinner"></div>
+
+    <!-- Phase Diagrams Section -->
+    <div id="phase-tab" class="tab-content active">
+        <h2>SNOTEL HUC 6 Phase Diagrams</h2>
+        <div class="container" id="phase-container"></div>
+    </div>
+
+    <div id="scatter-tab" class="tab-content">
+        <h2>SNOTEL Stations State-wide Scatter Plots</h2>
+        <div class="container" id="snow-drought-container"></div>
+    </div>
+
+    <script>
+        async function downloadAllPhase() {
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'block';
+
+            try {
+                const zip = new JSZip();
+                const promises = phaseDiagrams.map(async diagram => {
+                    const path = 'phase_diagrams/' + diagram;
+                    const response = await fetch(path);
+                    const blob = await response.blob();
+                    zip.file(diagram, blob);
+                });
+
+                await Promise.all(promises);
+
+                const content = await zip.generateAsync({type: "blob"});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = "phase_diagrams.zip";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            } catch (error) {
+                console.error('Download failed:', error);
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+
+        async function downloadAllScatter() {
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'block';
+
+            try {
+                const zip = new JSZip();
+                const promises = snowDroughtPlots.map(async plot => {
+                    const path = 'snow_drought_conditions/' + plot;
+                    const response = await fetch(path);
+                    const blob = await response.blob();
+                    zip.file(plot, blob);
+                });
+
+                await Promise.all(promises);
+
+                const content = await zip.generateAsync({type: "blob"});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = "scatter_plots.zip";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            } catch (error) {
+                console.error('Download failed:', error);
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+        const phaseDiagrams = [
+            "100200_Missouri_Headwaters_phase_diagram.png",
+            "100301_Upper_Missouri_phase_diagram.png",
+            "100302_Marias_phase_diagram.png",
+            "100401_Fort_Peck_Lake_phase_diagram.png",
+            "100700_Upper_Yellowstone_phase_diagram.png",
+            "100800_Big_Horn_phase_diagram.png",
+            "100901_Tongue_phase_diagram.png",
+            "100902_Powder_phase_diagram.png",
+            "101800_North_Platte_phase_diagram.png",
+            "101900_South_Platte_phase_diagram.png",
+            "110200_Upper_Arkansas_phase_diagram.png",
+            "110800_Upper_Canadian_phase_diagram.png",
+            "130100_Rio_Grande_Headwaters_phase_diagram.png",
+            "130201_Upper_Rio_Grande_phase_diagram.png",
+            "130202_Rio_Grande-Elephant_Butte_phase_diagram.png",
+            "140100_Colorado_Headwaters_phase_diagram.png",
+            "140200_Gunnison_phase_diagram.png",
+            "140300_Upper_Colorado-Dolores_phase_diagram.png",
+            "140401_Upper_Green_phase_diagram.png",
+            "140500_White-Yampa_phase_diagram.png",
+            "140600_Lower_Green_phase_diagram.png",
+            "140700_Upper_Colorado-Dirty_Devil_phase_diagram.png",
+            "140801_Upper_San_Juan_phase_diagram.png",
+            "150100_Lower_Colorado-Lake_Mead_phase_diagram.png",
+            "150200_Little_Colorado_phase_diagram.png",
+            "150400_Upper_Gila_phase_diagram.png",
+            "150601_Salt_phase_diagram.png",
+            "150602_Verde_phase_diagram.png",
+            "160101_Upper_Bear_phase_diagram.png",
+            "160102_Lower_Bear_phase_diagram.png",
+            "160201_Weber_phase_diagram.png",
+            "160202_Jordan_phase_diagram.png",
+            "160203_Great_Salt_Lake_phase_diagram.png",
+            "160300_Escalante_Desert-Sevier_Lake_phase_diagram.png",
+            "160401_Humboldt_phase_diagram.png",
+            "160402_Black_Rock_Desert_phase_diagram.png",
+            "160501_Truckee_phase_diagram.png",
+            "160502_Carson_phase_diagram.png",
+            "160503_Walker_phase_diagram.png",
+            "160600_Central_Nevada_Desert_Basins_phase_diagram.png",
+            "170101_Kootenai_phase_diagram.png",
+            "170102_Pend_Oreille_phase_diagram.png",
+            "170103_Spokane_phase_diagram.png",
+            "170200_Upper_Columbia_phase_diagram.png",
+            "170300_Yakima_phase_diagram.png",
+            "170401_Snake_Headwaters_phase_diagram.png",
+            "170402_Upper_Snake_phase_diagram.png",
+            "170501_Middle_Snake-Boise_phase_diagram.png",
+            "170502_Middle_Snake-Powder_phase_diagram.png",
+            "170601_Lower_Snake_phase_diagram.png",
+            "170602_Salmon_phase_diagram.png",
+            "170603_Clearwater_phase_diagram.png",
+            "170701_Middle_Columbia_phase_diagram.png",
+            "170702_John_Day_phase_diagram.png",
+            "170703_Deschutes_phase_diagram.png",
+            "170800_Lower_Columbia_phase_diagram.png",
+            "170900_Willamette_phase_diagram.png",
+            "171003_Southern_Oregon_Coastal_phase_diagram.png",
+            "171100_Puget_Sound_phase_diagram.png",
+            "171200_Oregon_Closed_Basins_phase_diagram.png",
+            "180102_Klamath_phase_diagram.png",
+            "180200_Upper_Sacramento_phase_diagram.png",
+            "180201_Lower_Sacramento_phase_diagram.png",
+            "180400_San_Joaquin_phase_diagram.png",
+            "180901_Mono-Owens_Lakes_phase_diagram.png",
+            "190201_Copper_River_phase_diagram.png",
+            "190202_Prince_William_Sound_phase_diagram.png",
+            "190203_Kenai_Peninsula_phase_diagram.png",
+            "190204_Knik_Arm_phase_diagram.png",
+            "190205_Susitna_River_phase_diagram.png",
+            "190803_Tanana_River_phase_diagram.png"
+        ];
+
+
+        function createPlotHTML(plot, path) {
+            return `
+                <div class="plot-container">
+                    <img loading="lazy" src="${path}${plot}" alt="${plot.replace('_', ' ').replace('.png', '')}">                    <div class="plot-actions">
+                        <button onclick="downloadImage('${path}${plot}')">Download</button>
+                        <button onclick="openInNewTab('${path}${plot}')">Open</button>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        function loadPlots(filter = '') {
+            const phaseContainer = document.getElementById('phase-container');
+            const backButton = document.getElementById('back-button');
+            phaseContainer.innerHTML = ''; // Clear existing plots
+
+            const filteredDiagrams = filter
+                ? phaseDiagrams.filter(d => d.startsWith(filter))
+                : phaseDiagrams;
+
+            // Show/hide back button and adjust container style based on filter
+            if (filter && filteredDiagrams.length === 1) {
+                backButton.style.display = 'inline-block';
+                phaseContainer.style.maxWidth = '900px';
+                phaseContainer.style.margin = '0 auto';
+                phaseContainer.style.padding = '20px';
+                // Add single plot specific styling
+                phaseContainer.style.display = 'block';
+            } else {
+                backButton.style.display = 'none';
+                phaseContainer.style.maxWidth = '100%';
+                phaseContainer.style.margin = '0';
+                phaseContainer.style.display = 'grid';
+            }
+
+            filteredDiagrams.forEach(function (diagram) {
+                phaseContainer.innerHTML += createPlotHTML(diagram, 'phase_diagrams/');
+            });
+        }
+
+        function showAllPlots() {
+            document.getElementById('station-select').value = '';
+            loadPlots();
+        }
+
+        function populateStationDropdown() {
+            const select = document.getElementById('station-select');
+            // Get unique station IDs
+            const stations = [...new Set(phaseDiagrams.map(diagram => {
+                const [id, ...nameParts] = diagram.split('_');
+                return {
+                    id: id,
+                    name: nameParts.slice(0, -2).join(' ')
+                };
+            }))];
+
+            // Sort by station name
+            stations.sort((a, b) => a.name.localeCompare(b.name));
+
+            // Add options to select
+            stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = station.id;
+                option.textContent = `${station.id} - ${station.name}`;
+                select.appendChild(option);
+            });
+        }
+
+        // Add event listener for station selection
+        document.getElementById('station-select').addEventListener('change', function () {
+            loadPlots(this.value);
+        });
+        function downloadImage(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = url.substring(url.lastIndexOf('/') + 1);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function openInNewTab(url) {
+            window.open(url, '_blank');
+        }
+
+        // Snow drought plots
+        const snowDroughtPlots = [
+            "AK_snow_drought_conditions.png",
+            "AZ_snow_drought_conditions.png",
+            "CA_snow_drought_conditions.png",
+            "CO_snow_drought_conditions.png",
+            "ID_snow_drought_conditions.png",
+            "MT_snow_drought_conditions.png",
+            "NM_snow_drought_conditions.png",
+            "NV_snow_drought_conditions.png",
+            "OR_snow_drought_conditions.png",
+            "SD_snow_drought_conditions.png",
+            "UT_snow_drought_conditions.png",
+            "WA_snow_drought_conditions.png",
+            "WY_snow_drought_conditions.png"
+        ];
+
+        function loadSnowDroughtPlots(stateFilter = '') {
+            const container = document.getElementById('snow-drought-container');
+            container.innerHTML = ''; // Clear existing plots
+            
+            const filteredPlots = stateFilter
+                ? snowDroughtPlots.filter(plot => plot.startsWith(stateFilter))
+                : snowDroughtPlots;
+                
+            filteredPlots.forEach(plot => {
+                container.innerHTML += createPlotHTML(plot, 'snow_drought_conditions/');
+            });
+        }
+
+        // Add event listener for state selection
+        document.getElementById('state-select').addEventListener('change', function() {
+            loadSnowDroughtPlots(this.value);
+        });
+
+        // Initialize the dashboard
+        populateStationDropdown();
+        populateStateDropdown();
+        loadPlots();
+        loadSnowDroughtPlots();
+    </script>
+
+</body>
+
+</html>
