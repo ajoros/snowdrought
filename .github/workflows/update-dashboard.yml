@@ -59,10 +59,15 @@ jobs:
       
       - name: Prepare deployment
         run: |
-          # Create deployment directory structure
+          # Create deployment directory with plots at root level
           mkdir -p deployment
           cp index.html deployment/
-          cp -r plots/ deployment/
+          
+          # Copy plots subdirectories to root of deployment (not wrapped in plots/)
+          cp -r plots/phase_diagrams deployment/
+          cp -r plots/snow_drought_conditions deployment/
+          
+          # Copy supporting files
           cp -r logo/ deployment/
           mkdir -p deployment/data
           cp data/snotel_100day_nov1_precipitation_percentiles.csv deployment/data/
@@ -71,12 +76,16 @@ jobs:
           
           # Update last modified timestamp
           date > deployment/last_updated.txt
+          
+          echo "Deployment structure:"
+          ls -la deployment/ | head -20
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./deployment
+          force_orphan: true
       
       - name: Commit processed data to main branch
         run: |
