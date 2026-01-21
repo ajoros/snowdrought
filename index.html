@@ -328,7 +328,7 @@
             try {
                 const zip = new JSZip();
                 const promises = phaseDiagrams.map(async diagram => {
-                    const path = 'plots/phase_diagrams/' + diagram;
+                    const path = 'phase_diagrams/' + diagram;
                     const response = await fetch(path);
                     const blob = await response.blob();
                     zip.file(diagram, blob);
@@ -358,7 +358,7 @@
             try {
                 const zip = new JSZip();
                 const promises = snowDroughtPlots.map(async plot => {
-                    const path = 'plots/snow_drought_conditions/' + plot;
+                    const path = 'snow_drought_conditions/' + plot;
                     const response = await fetch(path);
                     const blob = await response.blob();
                     zip.file(plot, blob);
@@ -492,7 +492,7 @@
             }
 
             filteredDiagrams.forEach(function (diagram) {
-                phaseContainer.innerHTML += createPlotHTML(diagram, 'plots/phase_diagrams/');
+                phaseContainer.innerHTML += createPlotHTML(diagram, 'phase_diagrams/');
             });
         }
 
@@ -567,7 +567,7 @@
                 : snowDroughtPlots;
                 
             filteredPlots.forEach(plot => {
-                container.innerHTML += createPlotHTML(plot, 'plots/snow_drought_conditions/');
+                container.innerHTML += createPlotHTML(plot, 'snow_drought_conditions/');
             });
         }
 
