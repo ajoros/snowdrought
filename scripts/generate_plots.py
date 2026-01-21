@@ -142,7 +142,7 @@ def generate_plot(wteq_file_path, prec_file_path, output_path):
     fig = plt.figure(figsize=(16, 16))
     ax = fig.add_subplot(111)
 
-    ax.set_title(f'{base_name} Water Year 25/26\\n{last_date_str}  SWE: {last_swe_ptile:.1f}%  Precip: {last_p_ptile:.1f}%', fontsize=25)
+    ax.set_title(f'{base_name} Water Year 25/26\n{last_date_str}  SWE: {last_swe_ptile:.1f}%  Precip: {last_p_ptile:.1f}%', fontsize=25)
     ax.set_ylim(0, 1)
     ax.set_xlim(0, 1)
     ax.axvline(x=0.50, color='k')
