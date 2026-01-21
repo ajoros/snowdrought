@@ -57,25 +57,39 @@ jobs:
           echo "Generating snow drought plots..."
           python scripts/generate_snow_drought_plots_new.py
       
-      - name: Update web dashboard
+      - name: Prepare deployment
         run: |
-          echo "Plots already in place, ready for GitHub Pages..."
+          # Create deployment directory structure
+          mkdir -p deployment
+          cp index.html deployment/
+          cp -r plots/ deployment/
+          cp -r logo/ deployment/
+          mkdir -p deployment/data
+          cp data/snotel_100day_nov1_precipitation_percentiles.csv deployment/data/
+          cp data/snotel_current_swe_percentiles.csv deployment/data/
+          cp data/snotel_station_list.csv deployment/data/
           
           # Update last modified timestamp
-          date > last_updated.txt
+          date > deployment/last_updated.txt
       
-      - name: Commit and push changes
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deployment
+      
+      - name: Commit processed data to main branch
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add plots/ data/*.csv last_updated.txt
+          git add data/*.csv
           
           # Check if there are changes to commit
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "No data changes to commit"
           else
-            git commit -m "Update dashboard data and plots - $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git commit -m "Update processed data - $(date -u +'%Y-%m-%d %H:%M UTC')"
             git push
           fi
       

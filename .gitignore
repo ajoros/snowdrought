@@ -42,8 +42,12 @@ data/snotel/swe/*.json
 # Keep the station list
 !data/snotel_station_list.csv
 
+# Exclude all generated plots - deployed to gh-pages branch instead
+plots/
+
 # Temporary files
 *.tmp
 temp/
 tmp/
 PROJECT_MIGRATION_SUMMARY.md
+last_updated.txt
