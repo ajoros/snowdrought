@@ -1,6 +1,6 @@
 Name,State,Value,Number_of_Observations_POR,Percentile_POR
 Onion Park,MT,0.0,23,100.0
-Hole-in-Mountain,NV,0.2,37,100.0
+Hole-in-Mountain,NV,0.1,37,100.0
 Savage Pass,ID,0.0,41,100.0
 Susitna Valley High,AK,0.0,37,100.0
 Michigan Creek,CO,0.0,26,100.0
@@ -27,7 +27,7 @@ Horse Meadow,CA,0.0,21,100.0
 Sedgwick Peak,ID,0.0,36,100.0
 Forestdale Creek,CA,0.0,21,100.0
 Moses Mtn,WA,0.0,33,100.0
-Columbine Pass,CO,0.2,38,100.0
+Columbine Pass,CO,0.3,38,100.0
 Tolby,NM,0.0,26,100.0
 Beaver Ck Village,CO,0.0,21,100.0
 Css Lab,CA,0.0,41,100.0
@@ -36,7 +36,7 @@ Dry Lake,CO,0.0,44,100.0
 Seine Creek,OR,0.0,42,100.0
 Deer Park,WY,0.0,26,100.0
 Never Summer,CO,0.0,22,100.0
-Vail Mountain,CO,0.1,46,100.0
+Vail Mountain,CO,0.0,46,100.0
 Brackett Creek,MT,0.0,30,100.0
 Schofield Pass,CO,0.3,39,100.0
 Stahl Peak,MT,0.0,49,97.95918367346938
@@ -51,21 +51,21 @@ Silvies,OR,0.0,45,100.0
 Salmon Meadows,WA,0.0,42,100.0
 Eilertson Meadows,OR,0.0,44,100.0
 Sucker Creek,WY,0.0,46,100.0
-Summit Ranch,CO,0.0,43,100.0
+Summit Ranch,CO,0.0,44,100.0
 Vienna Mine,ID,0.0,43,100.0
-Vacas Locas,NM,0.1,22,100.0
+Vacas Locas,NM,0.2,22,100.0
 Buck Flat,UT,0.0,46,100.0
-Lyman Lake,WA,0.1,42,97.61904761904762
+Lyman Lake,WA,0.0,42,100.0
 Toketee Airstrip,OR,0.0,21,100.0
 Schneider Meadows,OR,0.0,43,100.0
 Chalk Creek #2,UT,0.0,46,100.0
 Farnsworth Lake,UT,0.1,44,100.0
 Ivanhoe,CO,0.0,33,100.0
-Elbow Lake,WA,0.0,29,100.0
+Elbow Lake,WA,0.1,29,100.0
 Granite Crk,AK,0.0,36,97.22222222222221
 West Yellowstone,MT,0.2,58,100.0
 Farmington,UT,0.0,46,100.0
-Glen Cove,CO,0.3,20,100.0
+Glen Cove,CO,0.2,20,100.0
 Waldron,MT,0.0,56,100.0
 Moss Springs,OR,0.0,44,100.0
 Stillwater Creek,CO,0.0,39,100.0
@@ -92,7 +92,7 @@ Copper Mountain,CO,0.0,46,100.0
 Sylvan Lake,WY,0.0,44,100.0
 Cascade Summit,OR,0.0,44,100.0
 Draw Creek,NV,0.0,41,100.0
-Mt Rose Ski Area,NV,0.1,44,100.0
+Mt Rose Ski Area,NV,0.0,44,100.0
 Jackwhacker Gulch,CO,0.2,26,100.0
 Parleys Summit,UT,0.0,46,100.0
 Northeast Entrance,MT,0.0,58,100.0
@@ -110,17 +110,17 @@ Beaver Dams,UT,0.0,44,100.0
 Blue Lakes,CA,0.0,44,100.0
 Rex River,WA,0.0,29,100.0
 Clear Lake,OR,0.0,44,100.0
-Big Meadow,NV,0.1,41,100.0
+Big Meadow,NV,0.0,41,100.0
 Darkhorse Lake,MT,0.0,44,100.0
 Deadman Creek,MT,0.0,57,100.0
 East Rim Divide,WY,0.0,39,100.0
 Annie Springs,OR,0.0,24,100.0
 Lost Lake,ID,0.0,42,100.0
 King Mountain,OR,0.9,43,100.0
-N Fk Elk Creek,MT,0.1,57,100.0
+N Fk Elk Creek,MT,0.0,57,100.0
 Sheep Mtn.,ID,0.0,42,100.0
 Harris Flat,UT,0.0,44,100.0
-Cole Canyon,WY,0.0,24,100.0
+Cole Canyon,WY,0.1,24,100.0
 Taylor Green,OR,0.0,45,100.0
 Chepeta,UT,0.0,44,100.0
 Canyon,WY,0.0,44,100.0
@@ -138,7 +138,7 @@ Calvert Creek,MT,0.0,49,100.0
 Grave Creek,MT,0.0,49,100.0
 Badger Pass,MT,0.0,45,100.0
 Sage Creek Basin,WY,0.0,23,100.0
-Mineral Creek,CO,0.0,46,100.0
+Mineral Creek,CO,0.4,46,100.0
 Ben Lomond Trail,UT,0.0,44,100.0
 South Pass,WY,0.1,39,100.0
 Lake Irene,CO,0.0,45,100.0
@@ -150,7 +150,7 @@ Buffalo Park,CO,0.0,29,100.0
 Old Battle,WY,0.0,44,100.0
 Sylvan Road,WY,0.0,37,100.0
 Jump Off Joe,OR,0.0,46,100.0
-Flattop Mtn.,MT,0.0,55,98.18181818181819
+Flattop Mtn.,MT,0.0,55,100.0
 Magic Mountain,ID,0.0,44,100.0
 Hewinta,UT,0.0,39,100.0
 Sherwin,ID,0.0,43,100.0
@@ -169,7 +169,7 @@ Rubicon #2,CA,0.1,44,100.0
 Lizard Head Pass,CO,0.0,44,100.0
 Timber Creek,WY,0.0,37,100.0
 Casper Mtn.,WY,0.0,42,100.0
-Wilson Creek,ID,0.2,34,100.0
+Wilson Creek,ID,0.1,34,100.0
 Divide Peak,WY,0.0,44,100.0
 Lily Pond,CO,0.0,44,100.0
 Crater Meadows,ID,0.0,40,100.0
@@ -184,12 +184,12 @@ Port Graham,AK,0.0,24,100.0
 Palisades Tahoe,CA,0.0,44,100.0
 Widtsoe #3,UT,0.0,46,100.0
 Red River Pass #2,NM,0.0,45,100.0
-South Brush Creek,WY,0.1,44,100.0
+South Brush Creek,WY,0.0,44,100.0
 Cascade Mountain,UT,0.0,22,100.0
 Pickle Keg,UT,0.0,46,100.0
 Wolf Creek,OR,0.0,46,100.0
-Hoosier Pass,CO,0.0,44,100.0
-Lower Twin,MT,0.3,44,100.0
+Hoosier Pass,CO,0.0,44,97.72727272727273
+Lower Twin,MT,0.4,44,100.0
 Slumgullion,CO,0.0,44,100.0
 Nast Lake,CO,0.0,39,100.0
 Cougar Mountain,WA,0.6,43,100.0
@@ -210,10 +210,10 @@ Dills Camp,UT,0.0,45,100.0
 Paradise,WA,0.0,42,90.47619047619048
 Elk River,CO,0.0,46,100.0
 Short Creek,MT,0.0,36,100.0
-Summer Rim,OR,0.0,46,100.0
+Summer Rim,OR,0.1,46,100.0
 Bostetter R.S.,ID,0.0,43,100.0
 University Camp,CO,0.1,45,100.0
-Barker Lakes,MT,0.2,45,100.0
+Barker Lakes,MT,0.1,45,100.0
 Stevens Pass,WA,0.0,44,100.0
 Dollarhide Summit,ID,0.0,43,100.0
 Wolf Creek Summit,CO,0.0,38,100.0
@@ -240,30 +240,30 @@ Wood Creek,MT,0.0,46,100.0
 Monument Creek,AK,0.0,44,100.0
 Thaynes Canyon,UT,0.0,36,100.0
 Chocolate Gulch,ID,0.0,31,100.0
-Cochetopa Pass,CO,0.1,20,100.0
+Cochetopa Pass,CO,0.0,20,100.0
 Cottonwood Creek,WY,0.0,41,100.0
 Moonshine,ID,0.0,43,100.0
 Lone Pine,WA,0.0,44,97.72727272727273
-Alpine Meadows,WA,0.0,30,93.33333333333333
+Alpine Meadows,WA,0.0,30,96.66666666666667
 Porcupine,MT,0.0,48,100.0
 Snider Basin,WY,0.0,44,100.0
 Chalk Creek #1,UT,0.0,46,100.0
 Ochoco Meadows,OR,0.0,44,100.0
 Green Lake,WA,0.0,42,100.0
 Blewett Pass,WA,0.0,43,100.0
-Independence Lake,CA,0.0,46,95.65217391304348
+Independence Lake,CA,0.0,46,97.82608695652173
 Strawberry Divide,UT,0.0,46,100.0
-Currant Creek,UT,0.1,46,100.0
+Currant Creek,UT,0.2,46,100.0
 Cascade #2,CO,0.0,34,100.0
 Overland Res.,CO,0.0,35,100.0
 Marion Forks,OR,0.0,44,100.0
-Olallie Meadows,WA,0.5,42,100.0
+Olallie Meadows,WA,0.3,42,100.0
 Farmington Lower,UT,0.0,20,100.0
 Salt River Summit,WY,0.0,44,100.0
 Adin Mtn,CA,0.0,40,100.0
-Swede Peak,ID,0.0,43,100.0
+Swede Peak,ID,0.2,43,100.0
 Tie Creek,WY,0.0,30,100.0
-Mancos,CO,0.1,30,100.0
+Mancos,CO,0.2,30,100.0
 Monument Peak,MT,0.0,44,100.0
 Wilbur Bench,UT,0.0,45,100.0
 Box Creek,UT,0.0,45,100.0
@@ -271,13 +271,13 @@ Mt. Alyeska,AK,0.0,46,100.0
 Jones Pass,CO,0.0,25,100.0
 Van Wyck,ID,0.0,23,100.0
 Steel Creek Park,UT,0.0,46,100.0
-Lakefork Basin,UT,0.0,35,100.0
+Lakefork Basin,UT,0.0,35,97.14285714285714
 Crazyman Flat,OR,0.0,23,100.0
 Granite Peak,NV,0.0,44,100.0
 Cinnabar Park,WY,0.0,21,100.0
 Cumbres Trestle,CO,0.0,44,100.0
 Temple Fork,UT,0.0,22,100.0
-Lamoille #3,NV,0.2,44,100.0
+Lamoille #3,NV,0.0,44,100.0
 Rainy Pass,WA,0.0,42,100.0
 Bug Lake,UT,0.0,46,100.0
 Hidden Lake,ID,0.0,24,100.0
@@ -290,7 +290,7 @@ Red Pine Ridge,UT,0.0,46,100.0
 Lemhi Ridge,MT,0.0,49,100.0
 Mcneil Canyon,AK,0.0,35,100.0
 North Fork,OR,0.0,46,100.0
-Mckenzie,OR,0.4,43,100.0
+Mckenzie,OR,0.3,43,100.0
 Peavine Ridge,OR,0.0,43,100.0
 Medano Pass,CO,0.0,29,100.0
 Long Lake,AK,0.1,26,100.0
@@ -307,27 +307,27 @@ Mowich,WA,0.0,26,100.0
 Trough,WA,0.0,46,100.0
 Pole Creek R.S.,NV,0.0,44,100.0
 Middle Powder,WY,0.0,46,100.0
-Sheep Canyon,WA,0.0,41,97.5609756097561
+Sheep Canyon,WA,0.0,41,100.0
 Copper Camp,MT,0.0,46,100.0
 Evening Star,WY,0.0,42,100.0
 Twin Lakes,MT,0.0,57,100.0
 Mcknight Cabin,NM,0.0,21,100.0
 Trapper Lake,CO,0.0,39,100.0
 Midway Valley,UT,0.0,44,100.0
-Little Warm,WY,0.0,46,100.0
+Little Warm,WY,0.1,46,100.0
 Arapaho Ridge,CO,0.0,22,100.0
 Shell Creek,WY,0.0,46,100.0
 Park Creek Ridge,WA,0.1,46,100.0
 Moscow Mountain,ID,0.0,24,100.0
 Kimberly Mine,UT,0.0,44,100.0
 Workman Creek,AZ,0.0,44,100.0
-Ben Lomond Peak,UT,0.1,46,100.0
+Ben Lomond Peak,UT,0.0,46,100.0
 Grandview,AK,0.2,33,100.0
 Bunchgrass Mdw,WA,0.0,42,100.0
 Box Canyon,MT,0.0,46,100.0
 Indian Creek,WY,0.0,44,100.0
 Blue Mountain Spring,OR,0.0,46,100.0
-Daisy Peak,MT,0.1,29,100.0
+Daisy Peak,MT,0.0,29,100.0
 Banner Summit,ID,0.0,44,100.0
 Sheldon,NV,0.0,35,100.0
 Slug Creek Divide,ID,0.0,44,100.0
@@ -344,10 +344,10 @@ Marlette Lake,NV,0.0,46,100.0
 Webster Flat,UT,0.0,44,100.0
 Little Grassy,UT,0.0,39,100.0
 St. Lawrence Alt,WY,0.0,41,100.0
-Gold Center,OR,0.1,44,100.0
-Upper Tsaina River,AK,0.0,21,100.0
+Gold Center,OR,0.0,44,100.0
+Upper Tsaina River,AK,0.1,21,100.0
 Battle Mountain,WY,0.1,39,100.0
-Mosquito Ridge,ID,0.1,43,100.0
+Mosquito Ridge,ID,0.0,43,100.0
 Lamance Creek,NV,0.0,43,100.0
 Lost Horse,WA,0.0,34,100.0
 Trinchera,CO,0.0,35,100.0
@@ -373,7 +373,7 @@ Strawberry,OR,0.0,44,100.0
 Beaver Divide,UT,0.0,46,100.0
 Chemult Alternate,OR,0.0,44,100.0
 Garfield R.S.,ID,0.0,44,100.0
-Vallecito,CO,0.3,38,100.0
+Vallecito,CO,0.2,38,100.0
 Hoodoo Basin,MT,0.0,58,100.0
 Big Flat,UT,0.0,45,100.0
 Porphyry Creek,CO,0.0,46,100.0
@@ -388,7 +388,7 @@ South Fork Bull Run,OR,0.0,27,100.0
 Heber,AZ,0.0,44,100.0
 Spring Creek Divide,WY,0.0,44,100.0
 White River #1,UT,0.0,46,100.0
-Aneroid Lake #2,OR,0.0,42,100.0
+Aneroid Lake #2,OR,0.0,41,100.0
 Pine Creek Pass,ID,0.0,36,100.0
 Lakeview Ridge,MT,0.0,46,100.0
 Lookout Peak,UT,0.1,36,100.0
@@ -403,7 +403,7 @@ Mc Clure Pass,CO,0.0,44,100.0
 Elk Cabin,NM,0.0,27,100.0
 Silver Creek,OR,0.0,44,100.0
 Rock Creek,UT,0.0,44,100.0
-Coronado Trail,AZ,0.3,44,100.0
+Coronado Trail,AZ,0.2,44,100.0
 Trinity Mtn.,ID,0.0,44,100.0
 Mesa Lakes,CO,0.0,38,100.0
 Irish Taylor,OR,0.2,45,100.0
@@ -472,7 +472,7 @@ Crosho,CO,0.0,38,100.0
 Waterhole,WA,0.0,25,100.0
 Whiskey Ck,CO,0.0,44,100.0
 Triple Peak,WY,0.0,39,100.0
-Spur Park,MT,0.0,58,98.27586206896551
+Spur Park,MT,0.0,58,100.0
 Little Snake River,WY,0.0,20,100.0
 Independence Pass,CO,0.0,44,100.0
 Younts Peak,WY,0.0,42,100.0
@@ -484,7 +484,7 @@ Black Flat-U.M. Ck,UT,0.0,44,100.0
 Long Valley,ID,0.0,23,100.0
 Bowman Springs,OR,0.0,46,100.0
 Hickerson Park,UT,0.0,39,100.0
-Daly Lake,OR,0.5,44,100.0
+Daly Lake,OR,0.6,44,100.0
 Sharkstooth,CO,0.0,20,100.0
 Island Park,ID,0.0,43,100.0
 Fawn Creek,NV,0.0,44,100.0
@@ -510,16 +510,16 @@ Smiley Mountain,ID,0.0,23,100.0
 Burnt Mtn,MT,0.0,24,100.0
 Bear Creek,NV,0.0,45,100.0
 Thumb Divide,WY,0.0,37,100.0
-Five Points Lake,UT,0.2,44,100.0
+Five Points Lake,UT,0.3,44,100.0
 Hayden Fork,UT,0.0,46,100.0
 Little Chena Ridge,AK,2.8,42,28.57142857142857
 Dome Lake,WY,0.0,46,100.0
 Diamond Peak,NV,0.2,41,100.0
-Grave Springs,WY,0.1,32,100.0
-Morse Lake,WA,0.0,43,97.67441860465115
+Grave Springs,WY,0.2,32,100.0
+Morse Lake,WA,0.0,43,100.0
 Beartown,CO,0.0,42,100.0
 Graham Guard Sta.,ID,0.0,44,100.0
-Roaring River,OR,0.3,44,100.0
+Roaring River,OR,0.0,44,100.0
 Bear Mountain,ID,0.0,44,100.0
 Brundage Reservoir,ID,0.0,38,100.0
 Roach,CO,0.0,44,100.0
@@ -527,23 +527,23 @@ Marquette,WY,0.0,43,100.0
 Cole Creek,MT,0.0,50,100.0
 Big Creek Sum,NV,0.0,44,100.0
 Burroughs Creek,WY,0.0,45,100.0
-Apishapa,CO,0.1,44,100.0
+Apishapa,CO,0.0,44,100.0
 Boulder Mountain,MT,0.0,46,100.0
 Red Mountain Pass,CO,0.3,44,100.0
 Mormon Mountain,AZ,0.0,44,100.0
-Teuchet Creek,AK,0.0,43,100.0
+Teuchet Creek,AK,0.0,42,100.0
 Bettles Field,AK,0.0,44,100.0
 Granite Creek,WY,0.0,37,100.0
 Gunsight Pass,WY,0.0,26,100.0
 Galena,ID,0.0,42,100.0
-Madison Plateau,MT,0.1,57,100.0
+Madison Plateau,MT,0.2,57,100.0
 S Fork Shields,MT,0.0,44,100.0
 Dry Fork,UT,0.0,30,100.0
 El Diente Peak,CO,0.0,38,100.0
 Gerber Reservoir,OR,0.0,26,100.0
 Culebra #2,CO,0.0,45,100.0
 Hogg Pass,OR,0.0,45,100.0
-Payson R.S.,UT,0.2,44,100.0
+Payson R.S.,UT,0.1,44,100.0
 Swamp Creek,WA,0.0,25,100.0
 Chamita,NM,0.0,45,100.0
 Donkey Reservoir,UT,0.0,39,100.0
@@ -563,9 +563,9 @@ Fry,AZ,0.0,44,100.0
 Black Pine,MT,0.0,59,100.0
 Santa Fe,NM,0.1,28,100.0
 Howell Canyon,ID,0.0,44,100.0
-Little Meadows,OR,0.0,44,100.0
+Little Meadows,OR,0.0,43,100.0
 Saddle Mountain,OR,0.0,45,100.0
-Upper Wheeler,WA,0.0,43,100.0
+Upper Wheeler,WA,0.1,43,100.0
 Ebbetts Pass,CA,0.0,46,100.0
 Loveland Basin,CO,0.0,32,100.0
 Mule Creek,MT,0.0,44,100.0
@@ -583,7 +583,7 @@ Grizzly Peak,CO,0.0,44,100.0
 Bateman,NM,0.0,45,100.0
 White Elephant,ID,0.0,43,100.0
 Reynolds Creek,ID,0.0,22,100.0
-Mount Lockhart,MT,0.0,56,98.21428571428571
+Mount Lockhart,MT,0.0,56,100.0
 Wildcat,AZ,0.0,40,100.0
 Meadow Lake,ID,0.0,43,100.0
 Lasal Mountain,UT,0.0,43,100.0
@@ -595,16 +595,16 @@ Webber Springs,WY,0.0,44,100.0
 Independence Creek,CA,0.0,44,100.0
 Summit Lake,OR,0.0,44,100.0
 Sevenmile Marsh,OR,0.0,44,100.0
-Quartz Peak,WA,0.0,37,100.0
+Quartz Peak,WA,0.2,37,100.0
 North Rapid Creek,SD,0.0,28,100.0
-Pigtail Peak,WA,0.0,43,97.67441860465115
+Pigtail Peak,WA,0.0,43,100.0
 Spratt Creek,CA,0.0,44,100.0
-Carrot Basin,MT,0.0,57,100.0
+Carrot Basin,MT,0.1,57,100.0
 Phillips Bench,WY,0.0,44,100.0
 Bear Lake,CO,0.0,44,100.0
 Beaver Pass,WA,0.0,23,100.0
 Buckskin Joe,CO,0.0,25,100.0
-Middle Fork Camp,CO,0.2,23,100.0
+Middle Fork Camp,CO,0.1,23,100.0
 Burnt Mountain,WA,0.0,25,100.0
 Bisson Creek,MT,0.0,33,100.0
 Galena Summit,ID,0.0,43,100.0
@@ -622,7 +622,7 @@ Holland Meadows,OR,0.0,43,100.0
 Greenpoint,OR,0.0,45,100.0
 Columbus Basin,CO,0.0,30,100.0
 Upper San Juan,CO,0.1,46,100.0
-Leavitt Lake,CA,0.0,35,91.42857142857143
+Leavitt Lake,CA,0.0,35,94.28571428571428
 Burro Mountain,CO,0.0,44,100.0
 Placer Basin,MT,0.0,44,100.0
 South Mtn.,ID,0.0,43,100.0
@@ -649,8 +649,8 @@ Clayton Springs,UT,0.0,24,100.0
 Rocky Basin-Settleme,UT,0.0,43,100.0
 Clear Creek #1,UT,0.0,46,100.0
 Two Ocean Plateau,WY,0.0,44,100.0
-Clover Meadow,MT,0.1,46,100.0
-Taylor Canyon,NV,0.0,44,100.0
+Clover Meadow,MT,0.0,46,100.0
+Taylor Canyon,NV,0.1,44,100.0
 Cloud Peak Reservoir,WY,0.2,46,100.0
 Franklin Basin,ID,0.0,44,100.0
 Smith  Morehouse,UT,0.0,46,100.0
@@ -660,8 +660,8 @@ Grouse Camp,WA,0.1,42,100.0
 Quemazon,NM,0.0,44,100.0
 Trout Creek,UT,0.0,46,100.0
 Timpanogos Divide,UT,0.0,46,100.0
-Emigrant Summit,ID,0.2,43,100.0
-Tinkham Creek,WA,0.0,30,100.0
+Emigrant Summit,ID,0.1,43,100.0
+Tinkham Creek,WA,0.0,31,100.0
 Frisco Divide,NM,0.0,44,100.0
 Parrish Creek,UT,0.0,25,100.0
 Kiln,CO,0.0,44,100.0
