@@ -3,11 +3,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import sys
 from scipy import stats
 import datetime as dt
 import matplotlib as mpl
 import logging
 from time import time
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from water_year import today_pacific, water_year_start_end, plot_year_column
 
 # Setup logging to include timestamps
 logging.basicConfig(
@@ -68,6 +72,9 @@ def generate_plot(wteq_file_path, prec_file_path, output_path):
     swe_years = set(swedata.columns).intersection([str(year) for year in range(1900, 2100)])  # Assuming years are between 1900 and 2100
     p_years = set(pdata.columns).intersection([str(year) for year in range(1900, 2100)])
     common_years = sorted(swe_years.intersection(p_years), key=int)
+    if not common_years:
+        logging.warning(f"No common years in {output_path}; skipping")
+        return
 
     # Ensure presence of necessary columns and keep only the common years
     swe_cols_to_keep = ['Min', '10%', '30%', '70%', '90%', 'Max'] + common_years
@@ -108,17 +115,13 @@ def generate_plot(wteq_file_path, prec_file_path, output_path):
         p_ranks_all[p_locs] = p_ranks
         p_ptile[idx+1, :] = p_ranks_all.reshape(p_data.shape)[1, :]
 
-    # Determine the latest year column based on numeric column names
-    latest_year_column = common_years[-1]
+    today = today_pacific()
+    wy_start, wy_end = water_year_start_end(today)
+    latest_year_column = plot_year_column(common_years, wy_end)
     yearidx = pdata.columns.get_loc(latest_year_column)
 
-    # Define current date
-    today = dt.date.today()
-    end_date = today
-
-    # Calculate the number of days from Nov 1 to the end date
-    nov_1_date = dt.date(today.year - 1, 11, 1)
-    days_from_nov_1 = (end_date - nov_1_date).days
+    nov_1_date = dt.date(wy_start, 11, 1)
+    days_from_nov_1 = (today - nov_1_date).days
 
     # Define the end row while ensuring it doesn't exceed data length
     start_row = nov_1_row
@@ -142,7 +145,8 @@ def generate_plot(wteq_file_path, prec_file_path, output_path):
     fig = plt.figure(figsize=(16, 16))
     ax = fig.add_subplot(111)
 
-    ax.set_title(f'{base_name} Water Year 25/26\n{last_date_str}  SWE: {last_swe_ptile:.1f}%  Precip: {last_p_ptile:.1f}%', fontsize=25)
+    wy_label = f"{str(wy_start)[2:]}/{str(wy_end)[2:]}"
+    ax.set_title(f'{base_name} Water Year {wy_label}\n{last_date_str}  SWE: {last_swe_ptile:.1f}%  Precip: {last_p_ptile:.1f}%', fontsize=25)
     ax.set_ylim(0, 1)
     ax.set_xlim(0, 1)
     ax.axvline(x=0.50, color='k')

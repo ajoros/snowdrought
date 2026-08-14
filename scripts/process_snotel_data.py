@@ -2,8 +2,17 @@ import pandas as pd
 import numpy as np
 import json
 import os
-from datetime import datetime, timedelta
+import sys
 import logging
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from water_year import (
+    today_pacific,
+    water_year_start_end,
+    year_column_for_mmdd,
+    entry_num,
+    latest_in_water_year,
+)
 
 # Setup logging
 logging.basicConfig(
@@ -11,11 +20,14 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
+
 def process_precipitation_data(prec_dir):
     """Process precipitation data from Nov 1 through current date"""
     data = []
-    current_year = "2025"  # Water year starts Nov 1, 2025
-    next_year = "2026"    # Continues into 2026
+    today = today_pacific()
+    start_year, end_year = water_year_start_end(today)
+    start_s, end_s = str(start_year), str(end_year)
+    logging.info(f"Water year {start_year}/{end_year} (precip)")
 
     for filename in os.listdir(prec_dir):
         if not filename.endswith('.json'):
@@ -28,73 +40,44 @@ def process_precipitation_data(prec_dir):
             with open(os.path.join(prec_dir, filename), 'r') as f:
                 json_data = json.load(f)
 
-            # Get the Nov 1 value from current water year
+            latest_date, latest_value = latest_in_water_year(
+                json_data, start_year, end_year, today
+            )
             nov1_value = None
-            latest_value = None
-            latest_date = None
-
-            # First find latest value with valid data
-            for entry in reversed(json_data):
-                if next_year in entry and entry[next_year] is not None:
-                    try:
-                        value = float(entry[next_year])
-                        if not np.isnan(value):
-                            latest_value = value
-                            latest_date = entry['date']
-                            # Now find the Nov 1 value
-                            for e in json_data:
-                                if e['date'] == "11-01" and current_year in e and e[current_year] is not None:
-                                    try:
-                                        nov1_value = float(e[current_year])
-                                        break
-                                    except (ValueError, TypeError):
-                                        continue
-                            break
-                    except (ValueError, TypeError):
-                        continue
+            for entry in json_data:
+                if entry.get("date") == "11-01":
+                    nov1_value = entry_num(entry, start_s)
+                    if nov1_value is not None:
+                        break
 
             if latest_value is not None and nov1_value is not None:
-                # Calculate current accumulation
                 current_accum = latest_value - nov1_value
-
-                # Calculate historical accumulations for this time period
                 historical_accums = []
                 valid_years = set()
+                wy_years = {start_s, end_s}
+                available_years = sorted(
+                    int(year) for year in json_data[0].keys()
+                    if year.isdigit() and year not in wy_years
+                )
 
-                # Get all available years from the data
-                available_years = sorted([int(year) for year in json_data[0].keys() 
-                                       if year.isdigit() and year not in [current_year, next_year]])
-                
                 for year in available_years:
-                    year_str = str(year)
-                    next_year_str = str(year + 1)
-                    
-                    # Get Nov 1 value for this historical year
+                    hist_col = year_column_for_mmdd(latest_date, year, year + 1)
                     hist_nov1 = None
                     hist_current_date = None
-                    
                     for entry in json_data:
-                        if entry['date'] == "11-01" and year_str in entry and entry[year_str] is not None:
-                            try:
-                                hist_nov1 = float(entry[year_str])
-                            except (ValueError, TypeError):
-                                continue
-                            
-                        if entry['date'] == latest_date and next_year_str in entry and entry[next_year_str] is not None:
-                            try:
-                                hist_current_date = float(entry[next_year_str])
-                            except (ValueError, TypeError):
-                                continue
-                                
+                        if entry.get("date") == "11-01":
+                            hist_nov1 = entry_num(entry, str(year))
+                        if entry.get("date") == latest_date:
+                            hist_current_date = entry_num(entry, hist_col)
+
                     if hist_nov1 is not None and hist_current_date is not None:
                         hist_accum = hist_current_date - hist_nov1
                         if not np.isnan(hist_accum):
                             historical_accums.append(hist_accum)
-                            valid_years.add(year_str)
+                            valid_years.add(str(year))
 
                 if historical_accums and len(valid_years) >= 20:
                     percentile = len([x for x in historical_accums if x <= current_accum]) / len(historical_accums)
-                    
                     data.append({
                         'Name': station_name,
                         'State': state_code,
@@ -108,9 +91,14 @@ def process_precipitation_data(prec_dir):
 
     return pd.DataFrame(data)
 
+
 def process_swe_data(swe_dir):
     """Process current SWE data"""
     data = []
+    today = today_pacific()
+    start_year, end_year = water_year_start_end(today)
+    start_s, end_s = str(start_year), str(end_year)
+    logging.info(f"Water year {start_year}/{end_year} (SWE)")
 
     for filename in os.listdir(swe_dir):
         if not filename.endswith('.json'):
@@ -123,49 +111,27 @@ def process_swe_data(swe_dir):
             with open(os.path.join(swe_dir, filename), 'r') as f:
                 json_data = json.load(f)
 
-            # Get current water year (2026 - includes data from Nov 1, 2025 onwards)
-            current_year = "2025"  # Water year starts Nov 1, 2025
-            next_year = "2026"    # Continues into 2026
-            historical_years = []
-
-            # Find latest date with valid data
-            latest_valid_date = None
-            latest_value = None
-
-            # Check both current and next year for valid data
-            for entry in reversed(json_data):
-                if (next_year in entry and entry[next_year] is not None) or \
-                   (current_year in entry and entry[current_year] is not None):
-                    try:
-                        value = float(entry[next_year] if next_year in entry else entry[current_year])
-                        if not np.isnan(value):
-                            latest_valid_date = entry['date']
-                            latest_value = value
-                            break
-                    except (ValueError, TypeError):
-                        continue
+            latest_valid_date, latest_value = latest_in_water_year(
+                json_data, start_year, end_year, today
+            )
 
             if latest_valid_date:
-                # Get historical values for percentile calculation
                 historical_values = []
                 valid_years = set()
+                wy_years = {start_s, end_s}
 
-                # Find entry for latest valid date
                 for entry in json_data:
-                    if entry['date'] == latest_valid_date:
-                        for year in entry:
-                            if year.isdigit() and year != next_year and year != current_year and entry[year] is not None:
-                                try:
-                                    hist_val = float(entry[year])
-                                    if not np.isnan(hist_val):
-                                        valid_years.add(year)
-                                        historical_values.append(hist_val)
-                                except (ValueError, TypeError):
-                                    continue
+                    if entry.get("date") != latest_valid_date:
+                        continue
+                    for year in entry:
+                        if year.isdigit() and year not in wy_years:
+                            hist_val = entry_num(entry, year)
+                            if hist_val is not None:
+                                valid_years.add(year)
+                                historical_values.append(hist_val)
 
                 if historical_values and len(valid_years) >= 20:
                     percentile = len([x for x in historical_values if x <= latest_value]) / len(historical_values)
-
                     data.append({
                         'Name': station_name,
                         'State': state_code,

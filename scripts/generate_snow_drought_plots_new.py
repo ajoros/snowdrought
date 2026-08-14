@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # Setup logging
 logging.basicConfig(
@@ -37,10 +38,7 @@ def plot_state_conditions(df, state_name, output_dir):  # ← Added parameter
     ax.axhline(0.50, color='k', linewidth=1, zorder=2)
     ax.axvline(0.50, color='k', linewidth=1, zorder=2)
 
-    # Get current Pacific time (UTC-8)
-    utc_now = datetime.utcnow()
-    pacific_time = utc_now - timedelta(hours=8)
-    current_date = pacific_time.strftime('%Y-%m-%d')
+    current_date = datetime.now(ZoneInfo("America/Los_Angeles")).strftime('%Y-%m-%d')
     
     # Labels and formatting
     ax.set_title(f'{state_name} SNOTEL Stations on {current_date}', fontsize=16)
